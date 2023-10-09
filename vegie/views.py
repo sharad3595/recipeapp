@@ -19,6 +19,10 @@ def recipes(request):
             )    
         return redirect("/recipe/")
     queryset = Vegie.objects.all()
+
+    if request.GET.get('recipe_search'):
+        queryset = queryset.filter(recipe_name__icontains = request.GET.get('recipe_search'))
+
     context = {'recipes':queryset}
     return render(request,'vegie/recipes.html',context)
 
@@ -50,5 +54,6 @@ def recipe_edit(request,pk):
         queryset.save()
         return redirect('/recipe')
     
+   
     context = {'recipe':queryset}
     return render(request,'vegie/update_recipe.html',context)
